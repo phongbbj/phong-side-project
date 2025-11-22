@@ -40,6 +40,7 @@ export default function ProductDetailPage() {
           onClick={() =>
             addItem({
               id: product.id.toString(),
+              src: product.src,
               name: product.name,
               price: Number(product.price),
             })
