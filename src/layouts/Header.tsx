@@ -80,7 +80,7 @@ export function AppHeader() {
           </nav>
 
           <Link
-            to="/cart"
+            to="/pay"
             className={`
               relative inline-flex items-center gap-2 rounded-full border border-border px-3 py-1.5 
               text-body-sm hover:bg-gray-50
