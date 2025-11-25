@@ -8,7 +8,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { FEATURED_PRODUCTS } from "../../data/dumyData";
 import { formatCurrency, useCartStore } from "../../store/cartStore";
-import { Search, Star, Dot, Loader2, ChevronDown } from "lucide-react";
+import { Search, Star, Dot, Loader2 } from "lucide-react";
 
 type SortOption = "popular" | "price-asc" | "price-desc" | "rating-desc";
 
