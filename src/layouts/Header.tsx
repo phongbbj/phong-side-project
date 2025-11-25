@@ -23,17 +23,6 @@ export function AppHeader() {
                     </div>
                 </Link>
 
-                {/* Search */}
-                <div className="hidden md:flex flex-1 max-w-md">
-                    <div className="flex w-full items-center gap-2 rounded-full border border-border bg-white/80 px-3 py-1.5 shadow-[0_0_0_1px_rgba(148,163,184,0.15)]">
-                        <span className="text-xs text-muted">🔍</span>
-                        <input
-                            className="h-7 flex-1 border-none bg-transparent text-sm outline-none placeholder:text-muted"
-                            placeholder="Tìm kiếm sản phẩm, thương hiệu..."
-                        />
-                    </div>
-                </div>
-
                 {/* Cart + nav */}
                 <div className="flex items-center gap-3">
                     <nav className="hidden md:flex items-center gap-4 text-xs text-muted">
@@ -66,17 +55,6 @@ export function AppHeader() {
                             </span>
                         )}
                     </Link>
-                </div>
-            </div>
-
-            {/* Mobile search */}
-            <div className="mx-auto w-full max-w-6xl px-4 pb-3 md:hidden">
-                <div className="flex w-full items-center gap-2 rounded-full border border-border bg-white px-3 py-1.5">
-                    <span className="text-xs text-muted">🔍</span>
-                    <input
-                        className="h-7 flex-1 border-none bg-transparent text-xs outline-none placeholder:text-muted"
-                        placeholder="Tìm sản phẩm..."
-                    />
                 </div>
             </div>
         </header>
