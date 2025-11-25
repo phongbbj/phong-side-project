@@ -41,4 +41,26 @@ export default {
     },
   },
   plugins: [],
+  theme: {
+    extend: {
+      keyframes: {
+        "cart-bump": {
+          "0%": { transform: "scale(1)" },
+          "10%": { transform: "scale(1.1)" },
+          "30%": { transform: "scale(0.95)" },
+          "50%": { transform: "scale(1.05)" },
+          "100%": { transform: "scale(1)" },
+        },
+        "cart-badge": {
+          "0%": { transform: "scale(1)", opacity: "1" },
+          "50%": { transform: "scale(1.25)", opacity: "1" },
+          "100%": { transform: "scale(1)", opacity: "1" },
+        },
+      },
+      animation: {
+        "cart-bump": "cart-bump 0.3s ease-out",
+        "cart-badge": "cart-badge 0.3s ease-out",
+      },
+    },
+  },
 };

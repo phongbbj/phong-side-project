@@ -2629,3 +2629,46 @@ export const FEATURED_PRODUCTS: Product[] = [
     ]
   }
 ];
+
+
+export type Review = {
+  id: number;
+  author: string;
+  rating: number;
+  comment: string;
+  createdAt: string;
+};
+
+export const MOCK_REVIEWS: Record<string, Review[]> = {
+  "1": [
+    {
+      id: 1,
+      author: "Nguyễn Văn A",
+      rating: 5,
+      comment: "Âm thanh rất tốt, đeo lâu không bị đau tai.",
+      createdAt: "2025-11-20",
+    },
+    {
+      id: 2,
+      author: "Trần Thị B",
+      rating: 4,
+      comment: "Pin ổn, kết nối nhanh. Hơi nặng một chút.",
+      createdAt: "2025-11-21",
+    },
+    {
+      id: 3,
+      author: "Lê Văn C",
+      rating: 5,
+      comment: "Nghe nhạc chill cực kỳ đã, rất đáng tiền.",
+      createdAt: "2025-11-22",
+    },
+    {
+      id: 4,
+      author: "Phạm D",
+      rating: 4,
+      comment: "Thiết kế đẹp, build chắc chắn.",
+      createdAt: "2025-11-23",
+    },
+  ],
+  // thêm các id khác nếu muốn
+};
