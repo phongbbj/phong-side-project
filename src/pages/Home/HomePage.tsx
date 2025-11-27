@@ -1,3 +1,4 @@
+// src/pages/Home/HomePage.tsx
 import {
   useMemo,
   useState,
@@ -6,9 +7,9 @@ import {
   useCallback,
 } from "react";
 import { useNavigate } from "react-router-dom";
-import { FEATURED_PRODUCTS } from "../../data/dumyData";
 import { formatCurrency, useCartStore } from "../../store/cartStore";
 import { Search, Star, Dot, Loader2 } from "lucide-react";
+import { useProductsQuery } from "../../api/products";
 
 type SortOption = "popular" | "price-asc" | "price-desc" | "rating-desc";
 
@@ -32,18 +33,22 @@ export default function HomePage() {
 
   const loaderRef = useRef<HTMLDivElement | null>(null);
 
+  // React Query
+  const { data, isLoading, isError } = useProductsQuery();
+  const products = data ?? [];
+
   const categories = useMemo(
-    () => Array.from(new Set(FEATURED_PRODUCTS.map((p) => p.category))),
-    []
+    () => Array.from(new Set(products.map((p) => p.category))),
+    [products]
   );
 
   const brands = useMemo(
-    () => Array.from(new Set(FEATURED_PRODUCTS.map((p) => p.brand))),
-    []
+    () => Array.from(new Set(products.map((p) => p.brand))),
+    [products]
   );
 
   const filteredProducts = useMemo(() => {
-    let list = FEATURED_PRODUCTS.slice();
+    let list = products.slice();
 
     const keyword = search.trim().toLowerCase();
     if (keyword) {
@@ -96,13 +101,22 @@ export default function HomePage() {
     }
 
     return list;
-  }, [search, category, brand, priceRange, onlyNew, onlyHot, sortBy]);
+  }, [
+    products,
+    search,
+    category,
+    brand,
+    priceRange,
+    onlyNew,
+    onlyHot,
+    sortBy,
+  ]);
 
-  // Reset visibleCount khi thay filter/sort/search
+  // Reset visibleCount khi thay filter/sort/search hoặc khi data đổi
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setVisibleCount(INITIAL_COUNT);
-  }, [search, category, brand, priceRange, onlyNew, onlyHot, sortBy]);
+  }, [products, search, category, brand, priceRange, onlyNew, onlyHot, sortBy]);
 
   const visibleProducts = useMemo(
     () => filteredProducts.slice(0, visibleCount),
@@ -146,6 +160,25 @@ export default function HomePage() {
     };
   }, [hasMore, loadMore]);
 
+  if (isLoading && !products.length) {
+    return (
+      <div className="flex h-[60vh] items-center justify-center gap-2 text-body-sm text-muted">
+        <Loader2 className="w-5 h-5 animate-spin text-primary" />
+        <span>Đang tải sản phẩm...</span>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="flex h-[60vh] items-center justify-center">
+        <p className="text-body-sm text-red-500">
+          Có lỗi khi tải danh sách sản phẩm. Vui lòng thử lại sau.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-10">
       <section className="space-y-4">
@@ -164,7 +197,7 @@ export default function HomePage() {
           </div>
 
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-            {/* Search input không dùng relative */}
+            {/* Search input */}
             <div
               className="
                 flex w-full sm:w-64 items-center gap-2
@@ -186,7 +219,7 @@ export default function HomePage() {
               />
             </div>
 
-            {/* Sort select không dùng relative */}
+            {/* Sort select */}
             <div className="flex items-center gap-2">
               <select
                 value={sortBy}
@@ -380,43 +413,41 @@ export default function HomePage() {
                 onClick={() => navigate(`/product/${product.id}`)}
                 className="flex-1 flex flex-col text-left"
               >
-                {/* Vùng ảnh không dùng relative/absolute */}
+                {/* Vùng ảnh */}
                 <div className="aspect-4/3 bg-white flex flex-col overflow-hidden">
+                  <div className="relative aspect-4/3 bg-white flex items-center justify-center overflow-hidden">
+                    <img
+                      src={product.thumbnail}
+                      alt={product.name}
+                      className="
+                        w-full h-full object-cover
+                        transition-transform duration-200
+                        group-hover:scale-[1.02]
+                      "
+                    />
 
-                {/* Image */}
-                <div className="relative aspect-4/3 bg-white flex items-center justify-center overflow-hidden">
-                  <img
-                    src={product.thumbnail}
-                    alt={product.name}
-                    className="
-                      w-full h-full object-cover
-                      transition-transform duration-200
-                      group-hover:scale-[1.02]
-                    "
-                  />
+                    {(product.isNew || product.isHot) && (
+                      <span
+                        className="
+                          absolute top-2 left-2 text-caption px-2 py-0.5 rounded-full
+                          bg-primary text-white shadow-sm
+                        "
+                      >
+                        {product.isNew && "NEW"}
+                        {product.isNew && product.isHot && " · "}
+                        {product.isHot && "HOT"}
+                      </span>
+                    )}
 
-                  {(product.isNew || product.isHot) && (
                     <span
                       className="
-                        absolute top-2 left-2 text-caption px-2 py-0.5 rounded-full
-                        bg-primary text-white shadow-sm
+                        absolute bottom-2 left-2 text-caption px-2 py-0.5 rounded-full
+                        bg-black/70 text-white shadow-sm
                       "
                     >
-                      {product.isNew && "NEW"}
-                      {product.isNew && product.isHot && " · "}
-                      {product.isHot && "HOT"}
+                      {product.brand}
                     </span>
-                  )}
-
-                  <span
-                    className="
-                      absolute bottom-2 left-2 text-caption px-2 py-0.5 rounded-full
-                      bg-black/70 text-white shadow-sm
-                    "
-                  >
-                    {product.brand}
-                  </span>
-                </div>
+                  </div>
                 </div>
 
                 {/* Thông tin sản phẩm */}
@@ -485,7 +516,7 @@ export default function HomePage() {
           ))}
         </div>
 
-        {/* Sentinel để IntersectionObserver bám vào + spinner load thêm */}
+        {/* Sentinel + spinner load thêm */}
         {hasMore && (
           <div
             ref={loaderRef}
