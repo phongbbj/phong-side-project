@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { formatCurrency, useCartStore } from "../../../store/cartStore";
+import { formatCurrency, useCartStore } from "../../store/cartStore";
 
 export default function CartPage() {
   const items = useCartStore((state) => state.items);

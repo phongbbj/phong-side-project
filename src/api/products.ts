@@ -6,7 +6,7 @@ export type Product = (typeof FEATURED_PRODUCTS)[number];
 
 const PRODUCTS_QUERY_KEY = ["products"];
 
-async function fetchProducts(): Promise<Product[]> {
+export async function fetchProducts(): Promise<Product[]> {
   // Giả lập call API
   await new Promise((resolve) => setTimeout(resolve, 300));
   return FEATURED_PRODUCTS;

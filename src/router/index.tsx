@@ -4,7 +4,7 @@ import App from "../App";
 import NotFoundPage from "../pages/NotFoundPage";
 import HomePage from "../pages/Home/HomePage";
 import ProductDetailPage from "../pages/Product/ProductDetailPage";
-import CartPage from "../pages/Product/components/CartPage";
+import CartPage from "../pages/CardPage/CartPage";
 import CheckoutPage from "../pages/Pay/CheckoutPage";
 
 export const router = createBrowserRouter([
